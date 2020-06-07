@@ -10,7 +10,14 @@ class Stake : Cloneable {
     private var prePosition: Float
     private var velocity: Float
     private var acceleration: Float
-    private var speed: Float
+
+    private var _speed: Float = 1f
+    var speed: Float
+        get() = _speed
+        set(value) {
+            _speed = value
+            lineLength = _speed / 2
+        }
 
     constructor(p: PApplet, position: Float, velocity: Float, acceleration: Float, speed: Float) {
         this.p = p

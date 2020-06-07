@@ -27,6 +27,7 @@ class Main : PApplet() {
     private lateinit var kdScroll: HScrollbar
     private lateinit var kiScroll: HScrollbar
     private lateinit var gravityScroll: HScrollbar
+    private lateinit var speedScroll: HScrollbar
     private var gravityStrength = 0.2f
 
     private fun drawCoordinateSystem() {
@@ -72,38 +73,51 @@ class Main : PApplet() {
             kiScroll.pos = controller.ki * length
             gravityScroll = HScrollbar(this, 0.0f, (3 * height + offsetTop + spacing * 3).toFloat(), length, height)
             gravityScroll.pos = 0.2f * length
+            speedScroll = HScrollbar(this, 0.0f, (4 * height + offsetTop + spacing * 4).toFloat(), length, height)
+            speedScroll.pos = 0.2f * length
             once = false
         }
         kpScroll.update(wheel)
         kdScroll.update(wheel)
         kiScroll.update(wheel)
         gravityScroll.update(wheel)
+        speedScroll.update(wheel)
         wheel = 0
 
         kpScroll.display()
         kdScroll.display()
         kiScroll.display()
         gravityScroll.display()
+        speedScroll.display()
 
-        controller.kp = map(kpScroll.scrollPos, 0f, length.toFloat(), 0f, 1.03f)
-        controller.kd = map(kdScroll.scrollPos, 0f, length.toFloat(), 0f, 1.03f)
-        controller.ki = map(kiScroll.scrollPos, 0f, length.toFloat(), 0f, 1.03f)
-        gravityStrength = map(gravityScroll.scrollPos, 0f, length.toFloat(), 0f, 1.03f)
+        controller.kp = map(kpScroll.scrollPos, 0f, length.toFloat(), 0f, 1.1f)
+        controller.kd = map(kdScroll.scrollPos, 0f, length.toFloat(), 0f, 1.1f)
+        controller.ki = map(kiScroll.scrollPos, 0f, length.toFloat(), 0f, 1.1f)
+        gravityStrength = map(gravityScroll.scrollPos, 0f, length.toFloat(), 0f, 1.1f)
+
+        val speed = map(speedScroll.scrollPos, 0f, length.toFloat(), 0f, 3.1f)
+        stakes.forEach { it.speed = speed }
+
         text("kp: " + nf(controller.kp, 0, 2), textOffLeft + length.toFloat(), offsetTop.toFloat())
         text(
-            "kd: " + nf(controller.kd, 0, 2),
-            textOffLeft + length.toFloat(),
-            height + offsetTop + spacing.toFloat()
+                "kd: " + nf(controller.kd, 0, 2),
+                textOffLeft + length.toFloat(),
+                height + offsetTop + spacing.toFloat()
         )
         text(
-            "ki: " + nf(controller.ki, 0, 2),
-            textOffLeft + length.toFloat(),
-            2 * height + offsetTop + (spacing * 2).toFloat()
+                "ki: " + nf(controller.ki, 0, 2),
+                textOffLeft + length.toFloat(),
+                2 * height + offsetTop + (spacing * 2).toFloat()
         )
         text(
-            "gravity: " + nf(gravityStrength, 0, 2),
-            textOffLeft + length.toFloat(),
-            3 * height + offsetTop + (spacing * 3).toFloat()
+                "gravity: " + nf(gravityStrength, 0, 2),
+                textOffLeft + length.toFloat(),
+                3 * height + offsetTop + (spacing * 3).toFloat()
+        )
+        text(
+                "speed: " + nf(speed, 0, 2),
+                textOffLeft + length.toFloat(),
+                4 * height + offsetTop + (spacing * 4).toFloat()
         )
     }
 
@@ -113,7 +127,6 @@ class Main : PApplet() {
 
     override fun mouseWheel(event: MouseEvent) {
         wheel = event.count
-        println(wheel)
     }
 
     override fun setup() {

@@ -42,7 +42,7 @@ internal class HScrollbar {
             newPos = (p.mouseX - scrollHeight / 2.toFloat()).coerceIn(posMin, posMax)
         }
         if (over && wheel != 0) {
-            newPos += wheel*3
+            newPos = (newPos + (wheel*3).toFloat()).coerceIn(posMin, posMax)
         }
         if (abs(newPos - scrollPos) > 1.0f) {
             scrollPos += (newPos - scrollPos) / loose
