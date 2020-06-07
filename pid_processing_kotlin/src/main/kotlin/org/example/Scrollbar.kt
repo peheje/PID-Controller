@@ -1,6 +1,7 @@
 package com.peheje.`fun`
 
 import processing.core.PApplet
+import processing.event.MouseEvent
 import kotlin.math.abs
 
 internal class HScrollbar {
@@ -32,19 +33,23 @@ internal class HScrollbar {
         loose = 10
     }
 
-    fun update() {
+    fun update(wheel: Int) {
+        val over = mouseOverSlider()
         if (p.mousePressed) {
-            if (mouseOverSlider()) locked = true
+            if (over) locked = true
         } else locked = false
         if (locked) {
             newPos = (p.mouseX - scrollHeight / 2.toFloat()).coerceIn(posMin, posMax)
+        }
+        if (over && wheel != 0) {
+            newPos += wheel*3
         }
         if (abs(newPos - scrollPos) > 1.0f) {
             scrollPos += (newPos - scrollPos) / loose
         }
     }
 
-    fun mouseOverSlider(): Boolean {
+    private fun mouseOverSlider(): Boolean {
         return p.mouseX > xPos && p.mouseX < xPos + scrollWidth && p.mouseY > yPos && p.mouseY < yPos + scrollHeight
     }
 

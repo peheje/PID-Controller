@@ -2,6 +2,7 @@ package com.peheje.`fun`
 
 import processing.core.PApplet
 import processing.core.PConstants
+import processing.event.MouseEvent
 import java.util.*
 
 class Main : PApplet() {
@@ -13,6 +14,7 @@ class Main : PApplet() {
         }
     }
 
+    private var wheel: Int = 0
     private var curStake = Stake(this, 0.0f, 0.0f, 0.0f, 2f)
     private val maxHistory = 500
     private val controller = PidController(0.4f, 0.05f, 0.9f)
@@ -72,10 +74,11 @@ class Main : PApplet() {
             gravityScroll.pos = 0.2f * length
             once = false
         }
-        kpScroll.update()
-        kdScroll.update()
-        kiScroll.update()
-        gravityScroll.update()
+        kpScroll.update(wheel)
+        kdScroll.update(wheel)
+        kiScroll.update(wheel)
+        gravityScroll.update(wheel)
+        wheel = 0
 
         kpScroll.display()
         kdScroll.display()
@@ -106,6 +109,11 @@ class Main : PApplet() {
 
     override fun settings() {
         size(1200, 800)
+    }
+
+    override fun mouseWheel(event: MouseEvent) {
+        wheel = event.count
+        println(wheel)
     }
 
     override fun setup() {
