@@ -16,14 +16,11 @@ internal class HScrollbar {
     private val posMax: Float
     private val loose: Int
     private var locked = false
-    private val ratio: Float
 
     constructor(processing: PApplet, xp: Float, yp: Float, scrollW: Int, scrollH: Int) {
         p = processing
         scrollWidth = scrollW
         scrollHeight = scrollH
-        val widthHeightRatio = scrollW - scrollH
-        ratio = scrollW.toFloat() / widthHeightRatio.toFloat()
         xPos = xp
         yPos = yp - scrollH / 2
         scrollPos = xPos + scrollW / 2 - scrollH / 2
@@ -42,7 +39,7 @@ internal class HScrollbar {
             newPos = (p.mouseX - scrollHeight / 2.toFloat()).coerceIn(posMin, posMax)
         }
         if (over && wheel != 0) {
-            newPos = (newPos + (wheel*3).toFloat()).coerceIn(posMin, posMax)
+            newPos = (newPos - (wheel*3).toFloat()).coerceIn(posMin, posMax)
         }
         if (abs(newPos - scrollPos) > 1.0f) {
             scrollPos += (newPos - scrollPos) / loose
@@ -66,9 +63,9 @@ internal class HScrollbar {
     }
 
     var pos
-        get() = scrollPos * ratio
+        get() = PApplet.map(scrollPos, 0f, scrollWidth.toFloat() - scrollHeight-1, 0f, 1.0f)
         set(pos) {
-            scrollPos = pos
-            newPos = pos
+            scrollPos = pos * scrollWidth
+            newPos = pos * scrollWidth
         }
 }

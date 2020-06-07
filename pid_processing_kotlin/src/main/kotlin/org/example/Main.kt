@@ -66,15 +66,15 @@ class Main : PApplet() {
         val length = 300
         if (once) {
             kpScroll = HScrollbar(this, 0.0f, offsetTop.toFloat(), length, height)
-            kpScroll.pos = controller.kp * length
+            kpScroll.pos = controller.kp
             kdScroll = HScrollbar(this, 0.0f, (height + offsetTop + spacing).toFloat(), length, height)
-            kdScroll.pos = controller.kd * length
+            kdScroll.pos = controller.kd
             kiScroll = HScrollbar(this, 0.0f, (2 * height + offsetTop + spacing * 2).toFloat(), length, height)
-            kiScroll.pos = controller.ki * length
+            kiScroll.pos = controller.ki
             gravityScroll = HScrollbar(this, 0.0f, (3 * height + offsetTop + spacing * 3).toFloat(), length, height)
-            gravityScroll.pos = 0.2f * length
+            gravityScroll.pos = 0.2f
             speedScroll = HScrollbar(this, 0.0f, (4 * height + offsetTop + spacing * 4).toFloat(), length, height)
-            speedScroll.pos = 0.2f * length
+            speedScroll.pos = 0.2f
             once = false
         }
         kpScroll.update(wheel)
@@ -90,12 +90,12 @@ class Main : PApplet() {
         gravityScroll.display()
         speedScroll.display()
 
-        controller.kp = map(kpScroll.scrollPos, 0f, length.toFloat(), 0f, 1.1f)
-        controller.kd = map(kdScroll.scrollPos, 0f, length.toFloat(), 0f, 1.1f)
-        controller.ki = map(kiScroll.scrollPos, 0f, length.toFloat(), 0f, 1.1f)
-        gravityStrength = map(gravityScroll.scrollPos, 0f, length.toFloat(), 0f, 1.1f)
+        controller.kp = kpScroll.pos
+        controller.kd = kdScroll.pos
+        controller.ki = kiScroll.pos
+        gravityStrength = gravityScroll.pos
+        val speed = speedScroll.pos * 3
 
-        val speed = map(speedScroll.scrollPos, 0f, length.toFloat(), 0f, 3.1f)
         stakes.forEach { it.speed = speed }
 
         text("kp: " + nf(controller.kp, 0, 2), textOffLeft + length.toFloat(), offsetTop.toFloat())
